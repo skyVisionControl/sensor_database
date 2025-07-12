@@ -1,67 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sky_vision_control/view/screens/balloon_detail_screen.dart';
-import 'package:sky_vision_control/view/screens/captain_info_screen.dart';
-import 'package:sky_vision_control/view/screens/flight_details_screen.dart';
-import 'package:sky_vision_control/view/screens/location_screen.dart';
-import 'package:sky_vision_control/view/screens/violation_detail_screen.dart';
-import 'route_names.dart';
+
 import '../../view/screens/home_screen.dart';
 import '../../view/screens/flight_data_screen.dart';
+import '../../view/screens/flight_details_screen.dart';
+import '../../view/screens/balloon_detail_screen.dart';
+import '../../view/screens/captain_info_screen.dart';
+import '../../view/screens/location_screen.dart';
+import '../../view/screens/violation_detail_screen.dart';
+import 'route_names.dart';
 
+/// Uygulama genelinde kullanılacak GoRouter sağlayıcısı.
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: RouteNames.home,
     routes: [
+      // Ana ekran
       GoRoute(
         path: RouteNames.home,
         name: RouteNames.home,
-        pageBuilder: (context, state) => MaterialPage(
-          child: HomeScreen(),
-        ),
+        builder: (_, __) => const HomeScreen(),
       ),
+
+      // Uçuş Verileri
       GoRoute(
         path: RouteNames.flightData,
         name: RouteNames.flightData,
-        pageBuilder: (context, state) => MaterialPage(
-          child: FlightDataScreen(),
-        ),
+        builder: (_, __) => const FlightDataScreen(),
       ),
+
+      // Uçuş Detay (şimdilik idsiz)
       GoRoute(
-        path: '${RouteNames.flightDetails}/:id',
+        path: RouteNames.flightDetails,
         name: RouteNames.flightDetails,
-        pageBuilder: (context, state) => MaterialPage(
-          child: FlightDetailsScreen(),
-        ),
+        builder: (_, __) => const FlightDetailsScreen(),
       ),
+
+      // Balon Detay (parametresiz)
       GoRoute(
-        path: '${RouteNames.balloonDetail}/:id',
+        path: RouteNames.balloonDetail,
         name: RouteNames.balloonDetail,
-        pageBuilder: (context, state) => MaterialPage(
-          child: BalloonDetailScreen(),
-        ),
+        builder: (_, __) => const BalloonDetailScreen(),
       ),
+
+      // Pilot Bilgisi
       GoRoute(
         path: RouteNames.captainInfo,
         name: RouteNames.captainInfo,
-        pageBuilder: (context, state) => MaterialPage(
-          child: CaptainInfoScreen(),
-        ),
+        builder: (_, __) => const CaptainInfoScreen(),
       ),
+
+      // Konum
       GoRoute(
         path: RouteNames.location,
         name: RouteNames.location,
-        pageBuilder: (context, state) => MaterialPage(
-          child: LocationScreen(),
-        ),
+        builder: (_, __) => const LocationScreen(),
       ),
+
+      // İhlal Detay (şimdilik idsiz)
       GoRoute(
-        path: '${RouteNames.violationDetail}/:id',
+        path: RouteNames.violationDetail,
         name: RouteNames.violationDetail,
-        pageBuilder: (context, state) => MaterialPage(
-          child: ViolationDetailScreen(),
-        ),
+        builder: (_, __) => const ViolationDetailScreen(),
       ),
     ],
   );

@@ -1,107 +1,62 @@
+// lib/view/screens/balloon_detail_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sky_vision_control/view/widgets/section_tile.dart';
-import '../widgets/info_card.dart';
-import '../../core/constants/text_styles.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../repository/repository_providers.dart';
+import '../../model/sensor_data.dart';
+import '../../core/routing/route_names.dart';   //  '/' path’ini almak için
 
 class BalloonDetailScreen extends ConsumerWidget {
   const BalloonDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final sensorAsync = ref.watch(sensorStreamProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Balon Detayları', style: TextStyles.appBarTitle),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            // 1) Geri gidilebiliyorsa pop
+            if (GoRouter.of(context).canPop()) {
+              context.pop();
+            } else {
+              // 2) Aksi hâlde ana sayfaya git
+              context.go(RouteNames.home);
+            }
+          },
+        ),
+        title: const Text('Balon Detay'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: sensorAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text('Hata: $e')),
+        data: (SensorData d) => ListView(
+          padding: const EdgeInsets.all(16),
           children: [
-            const Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.blue,
-                child: Icon(Icons.air, size: 40, color: Colors.white),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Center(
-              child: Text("BAL-2023-0456", style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-              )),
-            ),
-            const SizedBox(height: 30),
-
-            const SectionTitle(title: "Sensör Verileri"),
-            Row(
-              children: const [
-                Expanded(
-                  child: InfoCard(
-                    title: "İrtifa",
-                    value: "1420 m",
-                    icon: Icons.height,
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: InfoCard(
-                    title: "Hız",
-                    value: "28 km/h",
-                    icon: Icons.speed,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: const [
-                Expanded(
-                  child: InfoCard(
-                    title: "Sıcaklık",
-                    value: "18°C",
-                    icon: Icons.thermostat,
-                  ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: InfoCard(
-                    title: "Rüzgar",
-                    value: "12 km/h",
-                    icon: Icons.air,
-                  ),
-                ),
-              ],
-            ),
-
-            const SectionTitle(title: "Uçuş Bilgileri"),
-            const InfoCard(
-              title: "Pilot",
-              value: "Ahmet Yılmaz",
-              icon: Icons.person,
-            ),
-            const InfoCard(
-              title: "Başlangıç Saati",
-              value: "06:45",
-              icon: Icons.timer,
-            ),
-            const InfoCard(
-              title: "Tahmini Süre",
-              value: "105 dk",
-              icon: Icons.timer_outlined,
-            ),
-
-            const SectionTitle(title: "Konum Bilgisi"),
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Center(child: Text("Harita Görünümü")),
-            ),
+            Text('Sıcaklık:  ${d.temperature.toStringAsFixed(2)} °C',
+                style: const TextStyle(fontSize: 20)),
+            Text('Basınç:    ${d.pressure.toStringAsFixed(2)} mbar',
+                style: const TextStyle(fontSize: 20)),
+            Text('Roll:      ${d.roll.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20)),
+            Text('Pitch:     ${d.pitch.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20)),
+            Text('Yaw:       ${d.yaw.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 20)),
+            if (d.lat != null && d.lng != null) ...[
+              const SizedBox(height: 12),
+              Text('Enlem:     ${d.lat}',
+                  style: const TextStyle(fontSize: 20)),
+              Text('Boylam:    ${d.lng}',
+                  style: const TextStyle(fontSize: 20)),
+              Text('İrtifa:    ${d.altitude?.toStringAsFixed(0) ?? '-'} m',
+                  style: const TextStyle(fontSize: 20)),
+              Text('Hız:       ${d.speed?.toStringAsFixed(1) ?? '-'} km/h',
+                  style: const TextStyle(fontSize: 20)),
+            ],
           ],
         ),
       ),
