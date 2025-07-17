@@ -39,10 +39,19 @@ dependencies:
   google_fonts: ^6.2.1
   firebase_core: ^2.24.2
   firebase_database: ^10.3.3
+  google_mlkit_face_detection: ^0.12.0
+  google_mlkit_commons: ^0.9.0
+  image_picker: ^1.1.2
   provider: ^6.1.0
   fl_chart: ^0.66.2
   flutter_map: ^6.1.0
   latlong2: ^0.9.0
+  #google_ml_kit: ^0.16.3
+  tflite_flutter: ^0.11.0
+  path_provider: ^2.0.15
+  image: ^4.5.0
+  google_mlkit_smart_reply: ^0.13.0
+
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +69,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/mobile_face_net.tflite
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

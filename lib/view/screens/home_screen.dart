@@ -1,7 +1,9 @@
+// lib/view/screens/home_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sky_vision_control/core/routing/route_names.dart';
+import '../../core/routing/route_names.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/text_styles.dart';
 
@@ -11,11 +13,9 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('SkyVision Control', style: TextStyles.appBarTitle),
-      ),
+      appBar: AppBar(title: Text('SkyVision Control', style: TextStyles.appBarTitle)),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -27,6 +27,11 @@ class HomeScreen extends ConsumerWidget {
             _buildNavButton(context, 'Pilot Bilgisi', RouteNames.captainInfo),
             _buildNavButton(context, 'Konum', RouteNames.location),
             _buildNavButton(context, 'İhlal Detay', RouteNames.violationDetail),
+            _buildNavButton(context, 'Kaptan Tanımlama', RouteNames.captainIdentification),
+            // Eski yüz tanıma ekranı
+            _buildNavButton(context, 'Pilot Giriş / Yüz Tanıma', RouteNames.faceRecognition),
+            // Yeni mobil yüz tanıma ekranı
+            _buildNavButton(context, 'Mobil Yüz Tanıma', RouteNames.mobileFaceDetection),
           ],
         ),
       ),
@@ -40,9 +45,11 @@ class HomeScreen extends ConsumerWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.button,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),
-        onPressed: () => context.go(route),
+        onPressed: () => context.push(route),
+        
         child: Text(text, style: TextStyles.buttonText),
       ),
     );

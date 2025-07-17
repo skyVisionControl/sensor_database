@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+// lib/core/routing/app_router.dart
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,56 +10,61 @@ import '../../view/screens/balloon_detail_screen.dart';
 import '../../view/screens/captain_info_screen.dart';
 import '../../view/screens/location_screen.dart';
 import '../../view/screens/violation_detail_screen.dart';
+import '../../view/screens/face_recognition_screen.dart';  
+import '../../modules/mobile_face/view/face_detection_screen.dart'; 
+import '../../modules/mobile_face/view/captain_identification_screen.dart'; // <-- yeni modül import
+
 import 'route_names.dart';
 
-/// Uygulama genelinde kullanılacak GoRouter sağlayıcısı.
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: RouteNames.home,
     routes: [
-      // Ana ekran
       GoRoute(
         path: RouteNames.home,
         name: RouteNames.home,
         builder: (_, __) => const HomeScreen(),
       ),
-
-      // Uçuş Verileri
+      GoRoute(
+        path: RouteNames.faceRecognition,
+        name: RouteNames.faceRecognition,
+        builder: (_, __) => const FaceRecognitionScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.captainIdentification,
+        name: RouteNames.captainIdentification,
+        builder: (_, __) => const CaptainIdentificationScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.mobileFaceDetection, // yeni rota
+        name: RouteNames.mobileFaceDetection,
+        builder: (_, __) => const FaceDetectionScreen(),
+      ),
       GoRoute(
         path: RouteNames.flightData,
         name: RouteNames.flightData,
         builder: (_, __) => const FlightDataScreen(),
       ),
-
-      // Uçuş Detay (şimdilik idsiz)
       GoRoute(
         path: RouteNames.flightDetails,
         name: RouteNames.flightDetails,
         builder: (_, __) => const FlightDetailsScreen(),
       ),
-
-      // Balon Detay (parametresiz)
       GoRoute(
         path: RouteNames.balloonDetail,
         name: RouteNames.balloonDetail,
         builder: (_, __) => const BalloonDetailScreen(),
       ),
-
-      // Pilot Bilgisi
       GoRoute(
         path: RouteNames.captainInfo,
         name: RouteNames.captainInfo,
         builder: (_, __) => const CaptainInfoScreen(),
       ),
-
-      // Konum
       GoRoute(
         path: RouteNames.location,
         name: RouteNames.location,
         builder: (_, __) => const LocationScreen(),
       ),
-
-      // İhlal Detay (şimdilik idsiz)
       GoRoute(
         path: RouteNames.violationDetail,
         name: RouteNames.violationDetail,
